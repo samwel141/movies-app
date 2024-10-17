@@ -1,0 +1,17 @@
+/* src/Components/Layout.css */
+
+.layout {
+  width: 100%; 
+  /* max-width: 1200px;  */
+  /* min-height: 100vh; */
+  margin: 0 auto; 
+  padding: 20px; 
+  box-sizing: border-box; 
+}
+
+.layout-content {
+  flex: 1;
+  min-height: 100%;
+  padding: 20px; 
+  box-sizing: border-box; 
+}

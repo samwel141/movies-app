@@ -1,0 +1,77 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 96%;
+  position: fixed; 
+  top: 0;
+  z-index: 10; 
+  background-color: rgba(155, 23, 23, 0.5); 
+  color: white;
+}
+.header .back-arrow-icon {
+  margin-right: 8px; 
+  cursor: pointer; 
+}
+
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer; 
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4d79ff; 
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; 
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase; 
+}
+
+.logout-icon {
+  font-size: 24px; 
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.logout-icon:hover {
+  color: #ff4d4d; 
+}
+
+.auth-buttons button {
+  padding: 12px 24px; 
+  font-size: 16px; 
+  border: none;
+  border-radius: 25px;  
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.auth-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.auth-buttons button:first-child {
+  background-color: #ff4d4d;  
+  color: white;
+}
+
+.auth-buttons button:last-child {
+  background-color: #4d79ff;  
+  color: white;
+}
