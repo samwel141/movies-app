@@ -6,6 +6,7 @@ const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
+  const [refresh, setRefresh] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,12 +34,14 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     fetchProfileFromStorage();
     setLoading(false);
-  }, [setIsLoggedIn, isLoggedIn, setProfile]);
+  }, [setIsLoggedIn, isLoggedIn, refresh, setRefresh, setProfile]);
 
   const value = {
     isLoggedIn,
     setIsLoggedIn,
     profile,
+    refresh,
+    setRefresh,
     logout,
     movies,
     setMovies,

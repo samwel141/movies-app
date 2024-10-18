@@ -31,7 +31,7 @@ const Movies = () => {
     try {
       const params = {
         query,
-        genre: selectedGenre,
+        genre: selectedGenre, 
         year,
         rating,
         sort_by: `${sortBy}.${sortOrder}`, 
@@ -80,7 +80,7 @@ const Movies = () => {
             <label>Genre</label>
             <select onChange={(e) => setSelectedGenre(e.target.value)} value={selectedGenre}>
               <option value="">All Genres</option>
-              {genres.map((genre) => (
+              {genres?.map((genre) => (
                 <option key={genre.id} value={genre.id}>
                   {genre.name}
                 </option>
@@ -134,7 +134,7 @@ const Movies = () => {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+          movies?.map((movie) => <MovieCard key={movie.id} movie={movie} />)
         )}
       </div>
 

@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const PrivateRoute = ({ element }) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('mov-token'); 
 
   if (!token) {
     toast.error('You must be logged in to access this page.'); 

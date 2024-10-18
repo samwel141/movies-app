@@ -8,7 +8,8 @@ import MoviesPage from '../pages/MoviesPage';
 import Movies from '../pages/Movies';
 import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
-// import PrivateRoute from './privateRoute';
+import PrivateRoute from './privateRoute';
+import GoogleCallback from '../pages/GoogleHandler/GoogleCallback';
 
 
 const ClientRoutes = () => {
@@ -18,11 +19,13 @@ const ClientRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/auth/google/callback" element={<GoogleCallback />} />
       <Route path="/movies" element={<MoviesPage />} />
       <Route path="/movies/home" element={<Movies />} />
-      <Route path="/movies/dashboard" element={<Dashboard />} />
-      <Route path="/movies/settings" element={<Settings />} />
-      {/* <Route path="/movies" element={<PrivateRoute element={<Movies />} />} /> */}
+      {/* <Route path="/movies/dashboard" element={<Dashboard />} />
+      <Route path="/movies/settings" element={<Settings />} /> */}
+      <Route path="/movies/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+      <Route path="/movies/settings" element={<PrivateRoute element={<Settings />} />} />
      
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
