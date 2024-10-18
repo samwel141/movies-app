@@ -3,12 +3,13 @@ import apiClient from '../../api/apiClient';
 import { toast } from 'react-toastify';
 
 const Settings = () => {
-    const [user, setUser] = useState({ username: '', email: '', password: '' });
+    const [user, setUser] = useState({ username: '', email: '', password: '', genres: [] });
+    const [genres, setGenres] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [showForm, setShowForm] = useState(false); 
-    
+
     useEffect(() => {
         const fetchProfile = async () => {
             const token = localStorage.getItem('mov-token'); 
@@ -18,17 +19,50 @@ const Settings = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setUser({ ...response.data.user, password: '' }); 
+                setUser({ ...response.data.user, password: '' });
             } catch (err) {
-                setError('Failed to fetch user profile');
+                console.log('Failed to fetch user profile');
             } finally {
                 setLoading(false);
-                setError('');
+            }
+        };
+
+        const fetchGenres = async () => {
+            try {
+                const response = await apiClient.get('/genres');
+                setGenres(response.data.genres);
+            } catch (err) {
+                setError('Failed to fetch genres');
             }
         };
 
         fetchProfile();
+        fetchGenres();
     }, []);
+
+    const handleGenreChange = async (e) => {
+        const token = localStorage.getItem('token');
+        const genreId = parseInt(e.target.value);
+        const isChecked = e.target.checked;
+
+        try {
+            if (isChecked) {
+                await apiClient.post(`/user/${user.id}/genres`, { genreId }, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setUser(prev => ({ ...prev, genres: [...prev.genres, genreId] }));
+            } else {
+                await apiClient.delete(`/user/${user.id}/genres`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    data: { genreId }
+                });
+                setUser(prev => ({ ...prev, genres: prev.genres.filter(id => id !== genreId) }));
+            }
+            toast(`Genre ${isChecked ? 'added' : 'removed'} successfully`);
+        } catch (err) {
+            setError(`Failed to ${isChecked ? 'add' : 'remove'} genre`);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,13 +75,11 @@ const Settings = () => {
 
         try {
             await apiClient.put(`/user/${user.id}`, user, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
             });
             toast('User information updated successfully');
-            setSuccess('');
-            setShowForm(false); 
+            setSuccess('Information updated');
+            setShowForm(false);
         } catch (err) {
             setError('Failed to update user information');
         }
@@ -56,6 +88,10 @@ const Settings = () => {
     const handleUpdateClick = () => {
         setShowForm(true); 
     };
+    const genresMap = genres.reduce((acc, genre) => {
+        acc[genre.id] = genre.name;
+        return acc;
+    }, {});
 
     if (loading) {
         return <div style={styles.loading}>Loading...</div>;
@@ -71,6 +107,12 @@ const Settings = () => {
                         <h3 style={styles.subHeader}>User Information</h3>
                         <p style={styles.infoText}><strong>Username:</strong> {user.username}</p>
                         <p style={styles.infoText}><strong>Email:</strong> {user.email}</p>
+                        <p style={styles.infoText}>
+                            <strong>Your Favourite Genres: </strong> 
+                           {user.genres.length > 0 
+                                ? user.genres.map((genreId) => genresMap[genreId]).join(', ') 
+                                : 'No genres selected'}
+                        </p>
                         <button onClick={handleUpdateClick} style={styles.button}>Update</button>
                     </div>
                 </>
@@ -113,6 +155,22 @@ const Settings = () => {
                                     placeholder="Enter new password"
                                 />
                             </div>
+
+                            <div style={styles.genreSection}>
+                                <h4 style={styles.genreHeader}>Select Your Genres</h4>
+                                {genres.map(genre => (
+                                    <div key={genre.id} style={styles.genreItem}>
+                                        <input
+                                            type="checkbox"
+                                            value={genre.id}
+                                            checked={user.genres.includes(genre.id)}
+                                            onChange={handleGenreChange}
+                                        />
+                                        <label style={styles.genreLabel}>{genre.name}</label>
+                                    </div>
+                                ))}
+                            </div>
+
                             <button type="submit" style={styles.button}>Save</button>
                         </form>
                     </div>
@@ -126,7 +184,7 @@ const styles = {
     container: {
         backgroundColor: '#141414', 
         color: '#ffffff',
-        padding: '40px', 
+        padding: '40px',
         borderRadius: '8px',
         maxWidth: '600px', 
         margin: 'auto',
@@ -134,7 +192,7 @@ const styles = {
     header: {
         color: '#e50914', 
         textAlign: 'center',
-        fontSize: '32px', 
+        fontSize: '32px',
     },
     section: {
         marginBottom: '30px',
@@ -165,9 +223,24 @@ const styles = {
         color: '#fff',
         fontSize: '16px',
     },
+    genreSection: {
+        marginTop: '20px',
+    },
+    genreHeader: {
+        fontSize: '20px',
+        color: '#e50914',
+        marginBottom: '10px',
+    },
+    genreItem: {
+        marginBottom: '10px',
+    },
+    genreLabel: {
+        marginLeft: '8px',
+        fontSize: '16px',
+    },
     button: {
         padding: '12px',
-        backgroundColor: '#e50914', 
+        backgroundColor: '#e50914',
         color: '#ffffff',
         border: 'none',
         borderRadius: '4px',
