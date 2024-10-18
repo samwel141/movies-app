@@ -10,6 +10,7 @@ const AppProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [runTour, setRunTour] = useState();
 
   const fetchProfileFromStorage = () => {
     const storedProfile = localStorage.getItem('mov-user');
@@ -42,6 +43,8 @@ const AppProvider = ({ children }) => {
     profile,
     refresh,
     setRefresh,
+    runTour,
+    setRunTour,
     logout,
     movies,
     setMovies,

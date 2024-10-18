@@ -34,20 +34,26 @@ const MovieCard = ({ movie }) => {
 
   const genres = genre_ids?.map(id => getGenreById(id)).join(', ');
 
+
+
   const handlePlayTrailer = async () => {
-    const token = localStorage.getItem('mov-token'); 
+    const token = localStorage.getItem('mov-token');
     if (!token) {
-      toast.info('You must be logged in to play the movie.'); 
+      toast.info('You must be logged in to play the movie.');
       return;
     }
-
+  
     try {
       const genreId = genre_ids[0]; 
-      const url = `/user/${profile?.id}/genres`;
-      await apiClient.post(url, { genreId }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
+  
+      const addGenre = window.confirm("Do you want to add this movie's genre to your favourite genres?");
+  
+      if (addGenre) {
+        await apiClient.post(`/user/${profile.id}/genres`, { genreId }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
+  
       if (trailer) {
         const trailerWindow = window.open('', '_blank', 'width=800,height=600');
   
@@ -110,7 +116,7 @@ const MovieCard = ({ movie }) => {
       toast.error('Failed to play the trailer or store the genre.');
     }
   };
-
+  
   const handleToggleFavorite = async () => {
     const token = localStorage.getItem('mov-token'); 
     if (!token) {

@@ -1,11 +1,17 @@
 
 .footer {
-    text-align: center;
-    padding: 10px;
-    background-color: rgba(155, 23, 23, 0.5); 
-    color: white;
-    position: absolute;
-    width: 96%;
-    bottom: 0;
+  width: 98%;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(155, 23, 23, 0.9); 
+  color: white;
+  position: relative;
+  bottom: 0;
+}
+
+
+@media (max-width: 768px) {
+  .footer {
+ display: none;
   }
-  
+}

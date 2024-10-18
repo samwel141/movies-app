@@ -1,8 +1,10 @@
 
+
 import React, { useEffect, useState } from 'react';
 import MovieCard from '../../components/movieCard';
 import apiClient from '../../api/apiClient';
 import './movies.css'; 
+import FilterListIcon from '@mui/icons-material/FilterList'; 
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -16,6 +18,7 @@ const Movies = () => {
   const [sortOrder, setSortOrder] = useState('desc'); 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
 
   useEffect(() => {
     fetchGenres(); 
@@ -64,68 +67,142 @@ const Movies = () => {
   };
 
   return (
-    <div className="movies-container">
+    <div className="movies-container" data-tour="movies">
       <div className="filters-container">
-        <form className="search-bar" onSubmit={handleSearch}>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search movies..."
-          />
-        </form>
-
-        <div className="filters">
-          <div className="filter">
-            <label>Genre</label>
-            <select onChange={(e) => setSelectedGenre(e.target.value)} value={selectedGenre}>
-              <option value="">All Genres</option>
-              {genres?.map((genre) => (
-                <option key={genre.id} value={genre.id}>
-                  {genre.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="filter">
-            <label>Year</label>
+        <div className="mobile-filters">
+          <form className="search-bar" onSubmit={handleSearch}>
             <input
-              type="number"
-              placeholder="Year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search movies..."
             />
-          </div>
+            <button type="button" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              <FilterListIcon /> 
+            </button>
+          </form>
 
-          <div className="filter">
-            <label>Rating</label>
+          {isDropdownOpen && (
+            <div className="dropdown-menu">
+              <div className="filters">
+                <div className="filter">
+                  <label>Genre</label>
+                  <select onChange={(e) => setSelectedGenre(e.target.value)} value={selectedGenre}>
+                    <option value="">All Genres</option>
+                    {genres?.map((genre) => (
+                      <option key={genre.id} value={genre.id}>
+                        {genre.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="filter">
+                  <label>Year</label>
+                  <input
+                    type="number"
+                    placeholder="Year"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  />
+                </div>
+
+                <div className="filter">
+                  <label>Rating</label>
+                  <input
+                    type="number"
+                    placeholder="Rating"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                  />
+                </div>
+
+                <div className="filter">
+                  <label>Sort by</label>
+                  <select onChange={(e) => setSortBy(e.target.value)} value={sortBy}>
+                    <option value="popularity">Popularity</option>
+                    <option value="release_date">Release Date</option>
+                    <option value="vote_average">Rating</option>
+                  </select>
+                </div>
+
+                <div className="filter">
+                  <label>Sort Order</label> 
+                  <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="desktop-filters">
+          <form className="search-bar" onSubmit={handleSearch}>
             <input
-              type="number"
-              placeholder="Rating"
-              min="0"
-              max="10"
-              step="0.1"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search movies..."
             />
-          </div>
+          </form>
 
-          <div className="filter">
-            <label>Sort by</label>
-            <select onChange={(e) => setSortBy(e.target.value)} value={sortBy}>
-              <option value="popularity">Popularity</option>
-              <option value="release_date">Release Date</option>
-              <option value="vote_average">Rating</option>
-            </select>
-          </div>
+          <div className="filters">
+            <div className="filter">
+              <label>Genre</label>
+              <select onChange={(e) => setSelectedGenre(e.target.value)} value={selectedGenre}>
+                <option value="">All Genres</option>
+                {genres?.map((genre) => (
+                  <option key={genre.id} value={genre.id}>
+                    {genre.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="filter">
-            <label>Sort Order</label> 
-            <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
+            <div className="filter">
+              <label>Year</label>
+              <input
+                type="number"
+                placeholder="Year"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              />
+            </div>
+
+            <div className="filter">
+              <label>Rating</label>
+              <input
+                type="number"
+                placeholder="Rating"
+                min="0"
+                max="10"
+                step="0.1"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+              />
+            </div>
+
+            <div className="filter">
+              <label>Sort by</label>
+              <select onChange={(e) => setSortBy(e.target.value)} value={sortBy}>
+                <option value="popularity">Popularity</option>
+                <option value="release_date">Release Date</option>
+                <option value="vote_average">Rating</option>
+              </select>
+            </div>
+
+            <div className="filter">
+              <label>Sort Order</label> 
+              <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

@@ -3,11 +3,6 @@ import React from 'react';
 import './home.css'; 
 
 const Home = () => {
-//   const movies = [
-//     { title: 'Movie 1', imageUrl: 'url_to_image_1' },
-//     { title: 'Movie 2', imageUrl: 'url_to_image_2' },
-//     { title: 'Movie 3', imageUrl: 'url_to_image_3' },
-//   ];
 
   const welcomeCards = [
     {
@@ -41,17 +36,8 @@ const Home = () => {
           ))}
         </div>
       </div>
-
-      {/* <div className="movie-grid">
-        {movies.map((movie, index) => (
-          <div className="movie-card" key={index}>
-            <img src={movie.imageUrl} alt={movie.title} className="movie-image" />
-            <h3 className="movie-title">{movie.title}</h3>
-          </div>
-        ))}
-      </div> */}
       <div className='button'>
-      <a href="/movies" className="big-button">Continue</a>
+      <a href="/movies" className="big-button" data-tour="continue">Continue</a>
       </div>
     </div>
   );
