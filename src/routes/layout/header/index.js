@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,26 +21,37 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="logo" onClick={() => navigate('/')}>
+      <div 
+        className="logo" 
+        onClick={() => navigate('/')} 
+        data-tour="header-logo"
+      >
         {location.pathname !== '/' && ( 
-          <FontAwesomeIcon icon={faArrowLeft} className="back-arrow-icon" />
+          <FontAwesomeIcon icon={faArrowLeft} className="back-arrow-icon" data-tour="header-back-arrow" />
         )}
         Movies App
       </div>
       <div className="auth-buttons">
         {isLoggedIn ? (
           <>
-            <div className="profile-avatar">{firstLetter}</div>
+            <div className="profile-avatar" data-tour="header-avatar">
+              {firstLetter}
+            </div>
             <FontAwesomeIcon 
               icon={faSignOutAlt} 
               className="logout-icon" 
               onClick={handleLogout} 
+              data-tour="header-logout"
             />
           </>
         ) : (
           <>
-            <button onClick={() => navigate('/login')}>Login</button>
-            <button onClick={() => navigate('/register')}>Register</button>
+            <button onClick={() => navigate('/login')} data-tour="header-login">
+              Login
+            </button>
+            <button onClick={() => navigate('/register')} data-tour="header-register">
+              Register
+            </button>
           </>
         )}
       </div>
