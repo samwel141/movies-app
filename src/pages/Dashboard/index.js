@@ -44,6 +44,7 @@ const Dashboard = ({ userId }) => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [watchlistIndex, setWatchlistIndex] = useState(0); 
   const [favoritesIndex, setFavoritesIndex] = useState(0); 
+  const [outerRadius, setOuterRadius] = useState(100); 
   const { profile } = useAppContext();
 
   useEffect(() => {
@@ -192,6 +193,24 @@ const Dashboard = ({ userId }) => {
         }
     };
 
+    useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth <= 768) {
+          setOuterRadius(60);
+        } else {
+          setOuterRadius(100);
+        }
+      };
+  
+      window.addEventListener('resize', handleResize);
+  
+      handleResize();
+  
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+
+
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4562'];
 
   const darkStyle = {
@@ -201,7 +220,7 @@ const Dashboard = ({ userId }) => {
   };
 
   return (
-    <Grid container spacing={4} style={{ backgroundColor: '#141414', minHeight: '100vh', padding: '20px' }}>
+    <Grid container spacing={4} style={{ backgroundColor: '#141414', minHeight: '100vh' }}>
       {/* Key Metrics Section */}
       <Grid item xs={12} md={6}>
         <Paper elevation={3} style={darkStyle}>
@@ -225,7 +244,7 @@ const Dashboard = ({ userId }) => {
                 nameKey="genre"
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius={outerRadius}
                 label={({ genre }) => genre}
               >
                 {metrics.genresDistribution.map((entry, index) => (

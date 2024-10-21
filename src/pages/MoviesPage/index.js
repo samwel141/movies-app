@@ -72,7 +72,15 @@ const MoviesPage = () => {
             flexDirection: { xs: 'column', sm: 'row' }, 
         }}>
             <CssBaseline />
-            <Toolbar sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: '25px' }}>
+            <Toolbar  sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'flex-start',
+                            paddingTop: {
+                            xs: '0px',   
+                            sm: '25px', 
+                            }
+                        }}>
                 {isMobile ? (
                     <>
                         <IconButton
@@ -145,7 +153,10 @@ const MoviesPage = () => {
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     overflowY: 'auto',
-                    padding: '20px',
+                    padding: {
+                        xs: '0px',
+                        sm: '20px'
+                    }
                 }}
             >
                 {renderContent()}

@@ -73,7 +73,7 @@ const MovieCard = ({ movie }) => {
     };
   
     fetchUserLists();
-  }, [movieId]);
+  }, []);
   
 
   const genres = genre_ids?.map(id => getGenreById(id)).join(', ');
@@ -221,8 +221,8 @@ const MovieCard = ({ movie }) => {
         <img
           src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
           alt={title}
-          height={280}
-          width={280}
+          height={400}
+          width={140}
           className="movie-poster"
         />
         {trailer && (
