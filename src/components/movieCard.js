@@ -19,18 +19,32 @@ const MovieCard = ({ movie }) => {
     const fetchUserLists = async () => {
       try {
         const token = localStorage.getItem('mov-token'); 
+        
         const response = await apiClient.get('/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
-
+  
         setIsFavorite(response?.data?.user?.favorites?.includes(movieId));
         setInWatchlist(response?.data?.user?.watch_list?.includes(movieId));
+        
+        localStorage.setItem('mov-user', JSON.stringify(response.data.user));
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
+        
+        const localUser = localStorage.getItem('mov-user');
+        if (localUser) {
+          const user = JSON.parse(localUser);
+          
+          setIsFavorite(user?.favorites?.includes(movieId));
+          setInWatchlist(user?.watch_list?.includes(movieId));
+        }
       }
     };
+  
     fetchUserLists();
   }, [movieId]);
+  
 
   const genres = genre_ids?.map(id => getGenreById(id)).join(', ');
 
