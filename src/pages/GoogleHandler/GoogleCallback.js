@@ -37,6 +37,7 @@ const GoogleCallback = () => {
                 .catch(error => {
                     
                     console.error('Error exchanging code:', error);
+                    toast.error('Logged failed! Please try again');
                     setRefresh(true);
                     navigate('/'); 
                 });

@@ -42,7 +42,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.open('http://localhost:4000/auth/google', '_self');
+    window.open('https://movies-api-dev.vercel.app/auth/google', '_self');
   };
 
   return (

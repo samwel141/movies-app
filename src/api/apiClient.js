@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: process.env.API_URL || 'https://movies-api-dev.vercel.app', 
+  baseURL: process.env.API_URL || 'http://localhost:4000', 
   timeout: 10000, 
   headers: {
     'Content-Type': 'application/json', 

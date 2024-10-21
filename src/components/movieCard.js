@@ -49,7 +49,7 @@ const MovieCard = ({ movie }) => {
       const addGenre = window.confirm("Do you want to add this movie's genre to your favourite genres?");
   
       if (addGenre) {
-        await apiClient.post(`/user/${profile.id}/genres`, { genreId }, {
+        await apiClient.post(`/user/${profile?._id}/genres`, { genreId }, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -125,7 +125,7 @@ const MovieCard = ({ movie }) => {
     }
 
     try {
-      const url = `/user/${profile.id}/favorites`;
+      const url = `/user/${profile?._id}/favorites`;
 
       if (isFavorite) {
         await apiClient.delete(url, {
@@ -152,7 +152,7 @@ const MovieCard = ({ movie }) => {
     }
 
     try {
-      const url = `/user/${profile.id}/watchlist`; 
+      const url = `/user/${profile?._id}/watchlist`; 
 
       if (inWatchlist) {
         await apiClient.delete(url, {

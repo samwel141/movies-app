@@ -49,7 +49,7 @@ const Dashboard = ({ userId }) => {
   useEffect(() => {
     const fetchUserLists = async () => {
       try {
-        const { data } = await apiClient.get(`/user/${profile?.id}/lists`);
+        const { data } = await apiClient.get(`/user/${profile?._id}/lists`);
         const { watch_list, favorites, genres } = data;
 
         const genreCounts = genres.reduce((acc, genreId) => {
@@ -95,7 +95,7 @@ const Dashboard = ({ userId }) => {
 
     fetchUserLists();
     fetchLatestMovies();
-  }, [userId, sortOption, profile?.id]);
+  }, [userId, sortOption, profile?._id]);
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);

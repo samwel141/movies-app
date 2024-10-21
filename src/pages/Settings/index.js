@@ -44,15 +44,16 @@ const Settings = () => {
         const token = localStorage.getItem('token');
         const genreId = parseInt(e.target.value);
         const isChecked = e.target.checked;
+        console.log(user);
 
         try {
             if (isChecked) {
-                await apiClient.post(`/user/${user.id}/genres`, { genreId }, {
+                await apiClient.post(`/user/${user._id}/genres`, { genreId }, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUser(prev => ({ ...prev, genres: [...prev.genres, genreId] }));
             } else {
-                await apiClient.delete(`/user/${user.id}/genres`, {
+                await apiClient.delete(`/user/${user._id}/genres`, {
                     headers: { Authorization: `Bearer ${token}` },
                     data: { genreId }
                 });
@@ -74,7 +75,7 @@ const Settings = () => {
         const token = localStorage.getItem('token');
 
         try {
-            await apiClient.put(`/user/${user.id}`, user, {
+            await apiClient.put(`/user/${user._id}`, user, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             toast('User information updated successfully');
