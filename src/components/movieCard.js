@@ -18,7 +18,7 @@ const MovieCard = ({ movie }) => {
   useEffect(() => {
     const fetchUserLists = async () => {
       try {
-        const token = localStorage.getItem('mov-token'); 
+        let token = localStorage.getItem('mov-token'); 
         
         const response = await apiClient.get('/profile', {
           headers: { Authorization: `Bearer ${token}` }
@@ -26,19 +26,49 @@ const MovieCard = ({ movie }) => {
   
         setIsFavorite(response?.data?.user?.favorites?.includes(movieId));
         setInWatchlist(response?.data?.user?.watch_list?.includes(movieId));
-        
+  
         localStorage.setItem('mov-user', JSON.stringify(response.data.user));
-        
+  
       } catch (error) {
         console.error('Error fetching user data:', error);
         
-        const localUser = localStorage.getItem('mov-user');
-        if (localUser) {
-          const user = JSON.parse(localUser);
+        if (error.response?.status === 401) {
+          console.log('Token expired, attempting refresh...');
+          await handleTokenRefresh();
           
-          setIsFavorite(user?.favorites?.includes(movieId));
-          setInWatchlist(user?.watch_list?.includes(movieId));
+          fetchUserLists();
+        } else {
+          const localUser = localStorage.getItem('mov-user');
+          if (localUser) {
+            const user = JSON.parse(localUser);
+            
+            setIsFavorite(user?.favorites?.includes(movieId));
+            setInWatchlist(user?.watch_list?.includes(movieId));
+          }
         }
+      }
+    };
+  
+    const handleTokenRefresh = async () => {
+      try {
+        const refreshToken = localStorage.getItem('mov-refresh-token');
+        
+        if (!refreshToken) {
+          console.error('No refresh token found');
+          return;
+        }
+  
+        const response = await apiClient.post('/refresh-token', { refreshToken });
+  
+        const newToken = response.data.token;
+        const newUser = response.data.user;
+  
+        localStorage.setItem('mov-token', newToken);
+        localStorage.setItem('mov-user', JSON.stringify(newUser));
+        
+      } catch (refreshError) {
+        console.error('Error refreshing token:', refreshError);
+        
       }
     };
   
